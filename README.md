@@ -2,7 +2,7 @@
 
 Dots and Boxes Remastered is a modern take on the classic pen-and-paper game "Dots and Boxes," but with an exciting twist! In addition to the traditional gameplay, this version introduces special power-up squares that add a new layer of strategy and fun to the game.
 
-*Available to play in browser:* `https://google.co.uk`
+*Available to play in browser:* [Dots and Boxes Remastered](https://alexshem247.github.io/dots-and-boxes-remastered/)
 
 Game written using HTML, CSS and JavaScript. Made in 2022.
 
