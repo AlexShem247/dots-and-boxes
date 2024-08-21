@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dots & Boxes Remastered</title>
+    <link rel="shortcut icon" type="image/jpg" href="images/favicon.png"/>
+    <link rel="stylesheet" href="stylesheet.css">
+</head>
+<body>
+    <img src="images/logo.png" alt="Dots and Boxes Remastered" class="center">
+    <h1 class="center">By Alexander Shemaly</h1>
+
+    <!-- Create player options -->
+    <table>
+    	<tr>
+        	<th id="player1">
+                <h2>PLAYER 1</h2>
+                Name: <input type="text" name="player1name" value="Player 1" autocomplete="off"><br><br>
+                Type: <input type="radio" value="human" name="player1choice" checked>Human
+                      <input type="radio" value="computer" name="player1choice" disabled>Computer
+                      <input type="radio" value="none" name="player1choice" disabled>None
+                <br>
+        
+            </th>
+        
+        	<th id="player2">
+                <h2>PLAYER 2</h2>
+                Name: <input type="text" name="player2name" value="Player 2" autocomplete="off"><br><br>
+                Type: <input type="radio" value="human" name="player2choice" >Human
+                      <input type="radio" value="computer" name="player2choice" checked>Computer <!-- Temp -->
+                      <input type="radio" value="none" name="player2choice" disabled>None
+                <br>
+        
+            </th>
+    	</tr>
+
+    	<tr>
+        	<th id="player3">
+                <h2>PLAYER 3</h2>
+                Name: <input type="text" name="player3name" value="Player 3" autocomplete="off"><br><br>
+                Type: <input type="radio" value="human" name="player3choice" >Human
+                      <input type="radio" value="computer" name="player3choice" >Computer
+                      <input type="radio" value="none" name="player3choice" checked>None
+                <br>
+        
+            </th>
+            <th id="player4">
+                <h2>PLAYER 4</h2>
+                Name: <input type="text" name="player4name" value="Player 4" autocomplete="off"><br><br>
+                Type: <input type="radio" value="human" name="player4choice" >Human
+                      <input type="radio" value="computer" name="player4choice" >Computer
+                      <input type="radio" value="none" name="player4choice" checked>None
+                <br>
+        
+            </th>
+    	</tr>
+    </table>
+
+    <!-- Set computer difficulty -->
+    <h1 class="center">Select Computer Difficulty</h1>
+    <div class="center" id="radioArea">
+        Difficulty: <input type="radio" value="easy" name="computerDifficuly" >Easy
+                    <input type="radio" value="medium" name="computerDifficuly" checked>Medium
+                    <input type="radio" value="hard" name="computerDifficuly" >Hard
+                <br><br>
+    </div>
+
+    <!-- Grid size option -->
+    <h1 class="center">Select Grid Size</h1>
+    <div class="center">
+        Columns: <input type="number" min="3" max="100" value=8 id="noColumns" style="width: 50px"> <br>
+        Rows: <input type="number" min="2" max="100" value=6 id="noRows" style="width: 50px"><br><br>
+    </div>
+
+    <!-- Select Powerups -->
+    <h1 class="center">Select Number of Powerups</h1>
+    <div class="center">
+        Bombs: <input type="number" min="0" max="100" value=2 id="noBombs" style="width: 50px;"> <br>
+        Erasers: <input type="number" min="0" max="100" value=2 id="noErasers" style="width: 50px"> <br>
+        Spray Cans: <input type="number" min="0" max="100" value=4 id="noSpray" style="width: 50px"> <br>
+        Switch: <input type="number" min="0" max="100" value=1 id="noSwitch" style="width: 50px"> <br>
+    </div> <br><br>
+
+    <!-- Create play button -->
+    <button class="center" onclick="check_game_requirements()">Play!</button>
+    <br>
+
+    <script src="dotsAndBoxes.js"></script>
+</body>
+<script>
+    function check_game_requirements() {
+        // Get data
+        let name = null
+        let type = null
+        let players = []
+
+        for (let i=1; i<=4; i++) {
+            type = document.querySelector(`input[name="player${i}choice"]:checked`).value
+            if (type != "none") {
+                // Valid player
+                name = document.getElementsByName(`player${i}name`)[0].value.trim()
+                players.push({"type": type, "name": name})
+            }
+        }
+
+        let gridSize = {
+            "columns": document.getElementById("noColumns").value,
+            "rows": document.getElementById("noRows").value
+        }
+
+        let noPowerups = {"eraser": document.getElementById("noErasers").value,
+        "switch": document.getElementById("noSwitch").value,
+        "horizontal spray": 0,
+        "vertical spray": 0,
+        "bomb": document.getElementById("noBombs").value}
+
+        for (let i=0; i<document.getElementById("noSpray").value; i++) {
+            if (i % 2 == 0) {
+                noPowerups["horizontal spray"] += 1
+            } else {
+                noPowerups["vertical spray"] += 1
+            }
+        }
+
+        let computerDifficuly = document.querySelector(`input[name="computerDifficuly"]:checked`).value
+        switch (computerDifficuly) {
+            case "easy":
+                computerDifficuly = 0.3
+                break
+            case "medium":
+                computerDifficuly = 0.6
+                break
+            default:
+                computerDifficuly = 0.9
+                break
+        }
+
+        // Play game
+        play_game(players, gridSize, noPowerups, computerDifficuly)
+    }
+</script>
+</html>
